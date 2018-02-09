@@ -1,0 +1,22 @@
+{
+	"type": "object",
+	"required": [
+		"ReferenceNumber", "DocumentType", "Amount"
+	],
+	"properties": {
+		"ReferenceNumber": {
+			"type": "string"
+		},
+		"DocumentType": {
+			"type": "string"
+		},
+		"Amount": {
+			"type": "string"
+		}
+	},
+	"example": {
+		"ReferenceNumber": "1234567890121",
+		"DocumentType": "2",
+		"Amount": "1000"
+	}
+}

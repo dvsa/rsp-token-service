@@ -1,0 +1,14 @@
+{
+	"type": "object",
+	"required": [
+		"Token"
+	],
+	"properties": {
+		"Token": {
+			"type": "string"
+		}
+	},
+	"example": {
+		"Token": "b1e4ce6caeb47246"
+	}
+}
