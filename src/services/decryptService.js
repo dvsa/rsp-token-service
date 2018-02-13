@@ -1,5 +1,6 @@
 import ConvertHex from 'convert-hex';
 
+import TokenValidator from '../utils/CheckTokenFormat';
 import DecryptTea from '../utils/decryptTea';
 import ParseDecryptedToken from '../utils/parseDecryptedToken';
 import CreateResponse from '../utils/createResponse';
@@ -9,6 +10,16 @@ const teaPass = process.env.ENCRYPTION_PASSWORD;
 export default class Notify {
 
 	static decrypt(token, callback) {
+		const isTokenValid = TokenValidator(token);
+
+		if (!isTokenValid) {
+			callback(
+				null,
+				Notify.ErrorResponse({ message: 'Token has not been sanitised' }),
+			);
+			return;
+		}
+
 		const tokenByteArray = new Uint8Array(ConvertHex.hexToBytes(token));
 		const teaPassArray = new Uint32Array(ConvertHex.hexToBytes(teaPass));
 		const uint32Token = new Uint32Array(tokenByteArray.buffer);
@@ -21,6 +32,7 @@ export default class Notify {
 				null,
 				Notify.ErrorResponse({ message: 'Token is not in the correct format' }),
 			);
+			return;
 		}
 
 		callback(
