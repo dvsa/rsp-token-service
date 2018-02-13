@@ -39,7 +39,7 @@ functions:
         http:
           path: decrypt
           method: post
-          authorizer: authorizer
+          authorizer: aws_iam
           cors: true
           documentation:
             summary: "Decrypt Token"
