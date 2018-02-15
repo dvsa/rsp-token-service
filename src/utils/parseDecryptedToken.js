@@ -39,7 +39,8 @@ export default (decryptedToken) => {
 	}
 
 	return {
-		ReferenceNumber: ref,
+		Reference: parsedRef,
+		FormattedReference: ref,
 		DocumentType: docType,
 		PaymentAmount: paymentAmount,
 	};

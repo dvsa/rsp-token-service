@@ -1,6 +1,6 @@
 import ConvertHex from 'convert-hex';
 
-import TokenValidator from '../utils/CheckTokenFormat';
+import TokenValidator from '../utils/checkTokenFormat';
 import DecryptTea from '../utils/decryptTea';
 import ParseDecryptedToken from '../utils/parseDecryptedToken';
 import CreateResponse from '../utils/createResponse';
@@ -29,14 +29,14 @@ export default class Notify {
 			const decryptedVal = DecryptTea(uint32Token, teaPassArray);
 			penaltyItems = ParseDecryptedToken(decryptedVal);
 		} catch (error) {
-			Notify.IncorrectTokenFormatResponse(callback);
 			console.log(error);
+			Notify.IncorrectTokenFormatResponse(callback);
 			return;
 		}
 
 		if (penaltyItems === '') {
-			Notify.IncorrectTokenFormatResponse(callback);
 			console.log('Token has decrypted in the incorrect format');
+			Notify.IncorrectTokenFormatResponse(callback);
 			return;
 		}
 
