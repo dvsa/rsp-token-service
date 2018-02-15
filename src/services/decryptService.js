@@ -1,6 +1,6 @@
 import ConvertHex from 'convert-hex';
 
-import TokenValidator from '../utils/checkTokenFormat';
+import TokenValidator from '../utils/checkFormat';
 import DecryptTea from '../utils/decryptTea';
 import ParseDecryptedToken from '../utils/parseDecryptedToken';
 import CreateResponse from '../utils/createResponse';
@@ -11,7 +11,7 @@ export default class Notify {
 
 	static decrypt(token, callback) {
 		if (!TokenValidator(token)) {
-			Notify.ErrorResponse(callback);
+			Notify.IncorrectTokenFormatResponse(callback);
 			console.log('Token failed validation');
 			return;
 		} else if (!TokenValidator(teaPass)) {
@@ -40,7 +40,17 @@ export default class Notify {
 			return;
 		}
 
-		Notify.SuccessfulResponse(penaltyItems);
+		callback(
+			null,
+			Notify.SuccessfulResponse(penaltyItems),
+		);
+	}
+
+	static IncorrectPassFormat(callback) {
+		callback(
+			null,
+			Notify.ErrorResponse({ message: 'Pass set in environment is not correct' }),
+		);
 	}
 
 	static IncorrectTokenFormatResponse(callback) {
