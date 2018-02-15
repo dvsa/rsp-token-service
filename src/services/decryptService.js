@@ -10,13 +10,11 @@ const teaPass = process.env.ENCRYPTION_PASSWORD;
 export default class Notify {
 
 	static decrypt(token, callback) {
-		const isTokenValid = TokenValidator(token);
-
-		if (!isTokenValid) {
-			callback(
-				null,
-				Notify.ErrorResponse({ message: 'Token has not been sanitised' }),
-			);
+		if (!TokenValidator(token)) {
+			Notify.ErrorResponse(callback);
+			return;
+		} else if (!TokenValidator(teaPass)) {
+			Notify.IncorrectPassFormat(callback);
 			return;
 		}
 
@@ -28,16 +26,17 @@ export default class Notify {
 		const penaltyItems = ParseDecryptedToken(decryptedVal);
 
 		if (penaltyItems === '') {
-			callback(
-				null,
-				Notify.ErrorResponse({ message: 'Token is not in the correct format' }),
-			);
+			Notify.IncorrectTokenFormatResponse(callback);
 			return;
 		}
 
+		Notify.SuccessfulResponse(penaltyItems);
+	}
+
+	static IncorrectTokenFormatResponse(callback) {
 		callback(
 			null,
-			Notify.SuccessfulResponse(penaltyItems),
+			Notify.ErrorResponse({ message: 'Token is not in the correct format' }),
 		);
 	}
 
