@@ -1,10 +1,13 @@
 {
 	"type": "object",
 	"required": [
-		"ReferenceNumber", "DocumentType", "Amount"
+		"Reference", "FormattedReference", "DocumentType", "Amount"
 	],
 	"properties": {
-		"ReferenceNumber": {
+		"Reference": {
+			"type": "string"
+		},
+		"FormattedReference": {
 			"type": "string"
 		},
 		"DocumentType": {
@@ -15,8 +18,9 @@
 		}
 	},
 	"example": {
-		"ReferenceNumber": "1234567890121",
-		"DocumentType": "2",
-		"Amount": "1000"
+		"Reference": "0012341567890",
+		"FormattedReference": "1234-1-567890-IM",
+		"DocumentType": "1",
+		"Amount": "66"
 	}
 }
