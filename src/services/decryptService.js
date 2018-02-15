@@ -29,7 +29,7 @@ export default class Notify {
 			const decryptedVal = DecryptTea(uint32Token, teaPassArray);
 			penaltyItems = ParseDecryptedToken(decryptedVal);
 		} catch (error) {
-			Notify.ErrorResponse(callback);
+			Notify.IncorrectTokenFormatResponse(callback);
 			console.log(error);
 			return;
 		}
