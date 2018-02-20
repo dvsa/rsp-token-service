@@ -5,18 +5,20 @@ import DecryptTea from '../utils/decryptTea';
 import ParseDecryptedToken from '../utils/parseDecryptedToken';
 import CreateResponse from '../utils/createResponse';
 
+require('dotenv').config();
+
 const teaPass = process.env.ENCRYPTION_PASSWORD;
 
 export default class Notify {
 
 	static decrypt(token, callback) {
 		if (!TokenValidator(token)) {
-			Notify.IncorrectTokenFormatResponse(callback);
 			console.log('Token failed validation');
+			Notify.IncorrectTokenFormatResponse(callback);
 			return;
 		} else if (!TokenValidator(teaPass)) {
-			Notify.IncorrectPassFormat(callback);
 			console.log('Pass failed validation');
+			Notify.IncorrectPassFormat(callback);
 			return;
 		}
 
