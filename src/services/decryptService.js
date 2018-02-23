@@ -5,18 +5,20 @@ import DecryptTea from '../utils/decryptTea';
 import ParseDecryptedToken from '../utils/parseDecryptedToken';
 import CreateResponse from '../utils/createResponse';
 
+require('dotenv').config();
+
 const teaPass = process.env.ENCRYPTION_PASSWORD;
 
-export default class Notify {
+export default class Decrypt {
 
 	static decrypt(token, callback) {
 		if (!TokenValidator(token)) {
-			Notify.IncorrectTokenFormatResponse(callback);
 			console.log('Token failed validation');
+			Decrypt.IncorrectTokenFormatResponse(callback);
 			return;
 		} else if (!TokenValidator(teaPass)) {
-			Notify.IncorrectPassFormat(callback);
 			console.log('Pass failed validation');
+			Decrypt.IncorrectPassFormat(callback);
 			return;
 		}
 
@@ -30,33 +32,33 @@ export default class Notify {
 			penaltyItems = ParseDecryptedToken(decryptedVal);
 		} catch (error) {
 			console.log(error);
-			Notify.IncorrectTokenFormatResponse(callback);
+			Decrypt.IncorrectTokenFormatResponse(callback);
 			return;
 		}
 
 		if (penaltyItems === '') {
 			console.log('Token has decrypted in the incorrect format');
-			Notify.IncorrectTokenFormatResponse(callback);
+			Decrypt.IncorrectTokenFormatResponse(callback);
 			return;
 		}
 
 		callback(
 			null,
-			Notify.SuccessfulResponse(penaltyItems),
+			Decrypt.SuccessfulResponse(penaltyItems),
 		);
 	}
 
 	static IncorrectPassFormat(callback) {
 		callback(
 			null,
-			Notify.ErrorResponse({ message: 'Pass set in environment is not correct' }),
+			Decrypt.ErrorResponse({ message: 'Pass set in environment is not correct' }),
 		);
 	}
 
 	static IncorrectTokenFormatResponse(callback) {
 		callback(
 			null,
-			Notify.ErrorResponse({ message: 'Token is not in the correct format' }),
+			Decrypt.ErrorResponse({ message: 'Token is not in the correct format' }),
 		);
 	}
 

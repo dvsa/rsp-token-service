@@ -2174,6 +2174,11 @@
         "is-obj": "1.0.1"
       }
     },
+    "dotenv": {
+      "version": "5.0.0",
+      "resolved": "https://registry.npmjs.org/dotenv/-/dotenv-5.0.0.tgz",
+      "integrity": "sha512-p4A7snaxI9Hnj3GDWhTpckHYcd9WwZDmGPcvJJV3CoRFq0Dvsp96eYgXBl9WbmbJfuxqiZ2WenNaeWSs675ghQ=="
+    },
     "download": {
       "version": "5.0.3",
       "resolved": "https://registry.npmjs.org/download/-/download-5.0.3.tgz",
@@ -2685,6 +2690,11 @@
           }
         }
       }
+    },
+    "expect.js": {
+      "version": "0.3.1",
+      "resolved": "https://registry.npmjs.org/expect.js/-/expect.js-0.3.1.tgz",
+      "integrity": "sha1-sKWaDS7/VDdUTr8M6qYBWEHQm1s="
     },
     "extend": {
       "version": "3.0.1",
