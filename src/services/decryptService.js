@@ -1,6 +1,7 @@
 import ConvertHex from 'convert-hex';
 
 import TokenValidator from '../utils/checkFormat';
+import IsHex from '../utils/isHex';
 import DecryptTea from '../utils/decryptTea';
 import ParseDecryptedToken from '../utils/parseDecryptedToken';
 import CreateResponse from '../utils/createResponse';
@@ -16,7 +17,7 @@ export default class Decrypt {
 			console.log('Token failed validation');
 			Decrypt.IncorrectTokenFormatResponse(callback);
 			return;
-		} else if (!TokenValidator(teaPass)) {
+		} else if (!IsHex(teaPass)) {
 			console.log('Pass failed validation');
 			Decrypt.IncorrectPassFormat(callback);
 			return;
