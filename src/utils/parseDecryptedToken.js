@@ -32,7 +32,7 @@ export default (decryptedToken) => {
 	const docType = parseInt(binaryArray.slice(18, 20).join(''), 2);
 	let parsedRef = parseInt(binaryArray.slice(20, 64).join(''), 2).toString();
 
-	if (docType !== 1 && (parsedRef.length !== 12 || parsedRef.length !== 13)) {
+	if (docType !== 1 && parsedRef.length !== 12 && parsedRef.length !== 13) {
 		return '';
 	}
 
