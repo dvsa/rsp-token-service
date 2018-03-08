@@ -25,7 +25,7 @@ export default (decryptedToken) => {
 	}
 
 	const paymentAmount = parseInt(binaryArray.slice(4, 18).join(''), 2);
-	if (paymentAmount.toString().length > 4 || paymentAmount.toString().length < 2) {
+	if (paymentAmount >= 10000 || paymentAmount < 10) {
 		return '';
 	}
 
