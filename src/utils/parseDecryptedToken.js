@@ -32,7 +32,7 @@ export default (decryptedToken) => {
 	const docType = parseInt(binaryArray.slice(18, 20).join(''), 2);
 	let parsedRef = parseInt(binaryArray.slice(20, 64).join(''), 2).toString();
 
-	if (docType !== 1 && parsedRef.length !== 12 && parsedRef.length !== 13) {
+	if (docType !== 1 && (parsedRef.length < 12 || parsedRef.length > 13)) {
 		return '';
 	}
 
@@ -44,11 +44,12 @@ export default (decryptedToken) => {
 		const section1 = parseInt(splitRef.slice(0, 6).join(''), 10);
 		const section2 = parseInt(splitRef.slice(6, 7).join(''), 10);
 		const section3 = parseInt(splitRef.slice(7, 13).join(''), 10);
-		if (section1 === 0 || section2 >= 2 || section3 === 0) {
-			return '';
-		}
 
 		ref = `${section1}-${section2}-${section3}-IM`;
+
+		if (!ref.match(/^[1-9][0-9]{0,5}-[0-1]-[1-9][0-9]{0,5}-IM$/)) {
+			return '';
+		}
 	}
 
 	return {
