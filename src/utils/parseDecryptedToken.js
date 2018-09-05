@@ -1,3 +1,4 @@
+import Validation from 'rsp-validation';
 
 export default (decryptedToken) => {
 
@@ -19,16 +20,11 @@ export default (decryptedToken) => {
 	});
 
 	const checkBits = binaryArray.slice(0, 4).join('');
-
-	if (checkBits !== '0000') {
-		return '';
-	}
-
 	const paymentAmount = parseInt(binaryArray.slice(4, 18).join(''), 2);
 	const docType = parseInt(binaryArray.slice(18, 20).join(''), 2);
 	let parsedRef = parseInt(binaryArray.slice(20, 64).join(''), 2).toString();
-
 	let ref = parsedRef;
+
 	if (docType === 1) {
 		ref = '0000000000000'.slice(ref.length) + ref;
 		parsedRef = ref;
@@ -36,7 +32,21 @@ export default (decryptedToken) => {
 		const section1 = parseInt(splitRef.slice(0, 6).join(''), 10);
 		const section2 = parseInt(splitRef.slice(6, 7).join(''), 10);
 		const section3 = parseInt(splitRef.slice(7, 13).join(''), 10);
+
 		ref = `${section1}-${section2}-${section3}-IM`;
+	}
+
+	const validateInfo = {
+		checkBits,
+		paymentAmount,
+		docType,
+		parsedRef,
+		formattedRef: ref,
+	};
+	const validationResponse = Validation.tokenValidation(validateInfo);
+
+	if (!validationResponse.valid) {
+		return '';
 	}
 
 	return {
