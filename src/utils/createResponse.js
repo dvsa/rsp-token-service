@@ -4,7 +4,7 @@ export default ({ body = {}, statusCode = 200 }) => {
 		headers: {
 			'Access-Control-Allow-Origin': '*', // Required for CORS support to work
 		},
-		body,
+		body: JSON.stringify(body),
 	};
 	return response;
 };
