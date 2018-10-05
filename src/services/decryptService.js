@@ -5,14 +5,14 @@ import IsHex from '../utils/isHex';
 import DecryptTea from '../utils/decryptTea';
 import ParseDecryptedToken from '../utils/parseDecryptedToken';
 import CreateResponse from '../utils/createResponse';
+import config from '../config';
 
 require('dotenv').config();
-
-const teaPass = process.env.ENCRYPTION_PASSWORD;
 
 export default class Decrypt {
 
 	static decrypt(token, callback) {
+		const teaPass = config.encryptionPassword();
 		if (!TokenValidator(token)) {
 			console.log('Token failed validation');
 			Decrypt.IncorrectTokenFormatResponse(callback);
