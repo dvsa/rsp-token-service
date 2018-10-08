@@ -1,7 +1,12 @@
+import 'babel-polyfill';
 import expect from 'expect';
 import DecryptService from '../services/decryptService';
+import config from '../config';
 
 describe('Decrypt Service', () => {
+	before(() => {
+		config.bootstrap();
+	});
 	it('should decrypt a valid Payment token', () => {
 		const token = '3b0fbefe2efa2854';
 		const expectedRef = '1231231231231';
