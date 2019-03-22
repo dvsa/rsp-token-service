@@ -35,7 +35,7 @@
     "build-and-deploy-AWS": "npm run start-build && npm run deploy-AWS"
   },
   "devDependencies": {
-    "babel-cli": "~6.18.0",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -46,14 +46,14 @@
     "eslint": "^4.9.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
-    "expect": "^21.2.1",
+    "expect": "^24.1.0",
     "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
     "npm-run-all": "^4.1.1",
-    "replace": "^0.3.0",
+    "replace": "^1.0.1",
     "rimraf": "^2.6.2",
-    "serverless": "1.26.0",
-    "serverless-dynamodb-local": "^0.2.26",
+    "serverless": "^1.38.0",
+    "serverless-dynamodb-local": "^1.0.2",
     "serverless-offline": "^3.16.0",
     "serverless-openapi-documentation": "^0.3.0",
     "sinon": "^4.0.2",
@@ -68,7 +68,7 @@
     "dotenv": "5.0.0",
     "event-stream": "3.3.4",
     "expect.js": "0.3.1",
-    "rsp-validation": "^1.3.0",
+    "rsp-validation": "^1.5.16",
     "substring": "1.0.0",
     "uuid": "^3.1.0"
   }
