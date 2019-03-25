@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+import '@babel/polyfill';
 import DecryptService from '../services/decryptService';
 import config from '../config';
 
