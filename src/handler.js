@@ -3,9 +3,7 @@ import decrypt from './functions/decrypt';
 
 require('dotenv').config();
 
-const handler = {
+export {
 	auth,
 	decrypt,
 };
-
-export default handler;

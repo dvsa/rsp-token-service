@@ -3,7 +3,7 @@ import DecryptService from '../services/decryptService';
 import config from '../config';
 
 let configBootstrapped = false;
-export default async (event, context, callback) => {
+export default async (event) => {
 	if (!configBootstrapped) {
 		await config.bootstrap();
 		configBootstrapped = true;
@@ -14,5 +14,5 @@ export default async (event, context, callback) => {
 		decryptObject = JSON.parse(event.body);
 	}
 
-	DecryptService.decrypt(decryptObject.Token, callback);
+	DecryptService.decrypt(decryptObject.Token);
 };
