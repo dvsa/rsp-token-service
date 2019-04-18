@@ -14,5 +14,5 @@ export default async (event) => {
 		decryptObject = JSON.parse(event.body);
 	}
 
-	DecryptService.decrypt(decryptObject.Token);
+	return DecryptService.decrypt(decryptObject.Token);
 };
