@@ -11,16 +11,15 @@ require('dotenv').config();
 
 export default class Decrypt {
 
-	static decrypt(token, callback) {
+	static async decrypt(token) {
 		const teaPass = config.encryptionPassword();
 		if (!TokenValidator(token)) {
 			console.log('Token failed validation');
-			Decrypt.IncorrectTokenFormatResponse(callback);
-			return;
-		} else if (!IsHex(teaPass)) {
+			return Decrypt.IncorrectTokenFormatResponse();
+		}
+		if (!IsHex(teaPass)) {
 			console.log('Pass failed validation');
-			Decrypt.IncorrectPassFormat(callback);
-			return;
+			return Decrypt.IncorrectPassFormat();
 		}
 
 		const tokenByteArray = new Uint8Array(ConvertHex.hexToBytes(token));
@@ -33,34 +32,23 @@ export default class Decrypt {
 			penaltyItems = ParseDecryptedToken(decryptedVal);
 		} catch (error) {
 			console.log(error);
-			Decrypt.IncorrectTokenFormatResponse(callback);
-			return;
+			return Decrypt.IncorrectTokenFormatResponse();
 		}
 
 		if (penaltyItems === '') {
 			console.log('Token has decrypted in the incorrect format');
-			Decrypt.IncorrectTokenFormatResponse(callback);
-			return;
+			return Decrypt.IncorrectTokenFormatResponse();
 		}
 
-		callback(
-			null,
-			Decrypt.SuccessfulResponse(penaltyItems),
-		);
+		return Decrypt.SuccessfulResponse(penaltyItems);
 	}
 
-	static IncorrectPassFormat(callback) {
-		callback(
-			null,
-			Decrypt.ErrorResponse({ message: 'Pass set in environment is not correct' }),
-		);
+	static IncorrectPassFormat() {
+		return Decrypt.ErrorResponse({ message: 'Pass set in environment is not correct' });
 	}
 
-	static IncorrectTokenFormatResponse(callback) {
-		callback(
-			null,
-			Decrypt.ErrorResponse({ message: 'Token is not in the correct format' }),
-		);
+	static IncorrectTokenFormatResponse() {
+		return Decrypt.ErrorResponse({ message: 'Token is not in the correct format' });
 	}
 
 	static SuccessfulResponse(decryptedObj) {
