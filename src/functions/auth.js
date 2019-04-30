@@ -1,6 +1,6 @@
 import NoAuth from '../services/noAuth';
 
-export default (event, context, callback) => {
+export default (event) => {
 	const token = event.authorizationToken;
 	const authorizer = generateAuthorizer(token);
 
@@ -12,10 +12,9 @@ export default (event, context, callback) => {
 			principalId,
 			policyDocument: policy,
 		};
-		callback(null, response);
-	} else {
-		callback('Unauthorized');
+		return response;
 	}
+	throw new Error('Unauthorized');
 };
 
 function generateAuthorizer(token) {
