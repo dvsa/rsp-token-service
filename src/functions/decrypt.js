@@ -8,7 +8,6 @@ export default async (event) => {
 		await config.bootstrap();
 		configBootstrapped = true;
 	}
-	console.log(JSON.stringify(event, null, 2));
 	let decryptObject = event.body;
 	if (typeof decryptObject === 'string') {
 		decryptObject = JSON.parse(event.body);
