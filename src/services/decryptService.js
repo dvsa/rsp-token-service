@@ -6,6 +6,7 @@ import DecryptTea from '../utils/decryptTea';
 import ParseDecryptedToken from '../utils/parseDecryptedToken';
 import CreateResponse from '../utils/createResponse';
 import config from '../config';
+import { logInfo } from '../utils/logger';
 
 require('dotenv').config();
 
@@ -14,11 +15,11 @@ export default class Decrypt {
 	static async decrypt(token) {
 		const teaPass = config.encryptionPassword();
 		if (!TokenValidator(token)) {
-			console.log('Token failed validation');
+			logInfo('DecryptTokenFailedValidation', { token });
 			return Decrypt.IncorrectTokenFormatResponse();
 		}
 		if (!IsHex(teaPass)) {
-			console.log('Pass failed validation');
+			logInfo('DecryptPassFailedValidation', 'Pass failed validation');
 			return Decrypt.IncorrectPassFormat();
 		}
 
@@ -31,12 +32,12 @@ export default class Decrypt {
 			const decryptedVal = DecryptTea(uint32Token, teaPassArray);
 			penaltyItems = ParseDecryptedToken(decryptedVal);
 		} catch (error) {
-			console.log(error);
+			logInfo('DecryptError', { token });
 			return Decrypt.IncorrectTokenFormatResponse();
 		}
 
 		if (penaltyItems === '') {
-			console.log('Token has decrypted in the incorrect format');
+			logInfo('DecryptError', { token, message: 'Token has decrypted in the incorrect format' });
 			return Decrypt.IncorrectTokenFormatResponse();
 		}
 
