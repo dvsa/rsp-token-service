@@ -63,7 +63,7 @@
     "buffer": "5.0.8",
     "convert-hex": "0.1.0",
     "dotenv": "5.0.0",
-    "event-stream": "3.3.4",
+    "event-stream": "3.3.5",
     "expect.js": "0.3.1",
     "rsp-validation": "^1.5.16",
     "substring": "1.0.0",
