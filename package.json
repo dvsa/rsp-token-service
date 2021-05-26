@@ -60,7 +60,7 @@
   "dependencies": {
     "aws-sdk": "^2.140.0",
     "@babel/polyfill": "^7.4.0",
-    "buffer": "5.0.8",
+    "buffer": "5.7.1",
     "convert-hex": "0.1.0",
     "dotenv": "5.0.0",
     "event-stream": "3.3.4",
