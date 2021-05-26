@@ -67,6 +67,6 @@
     "expect.js": "0.3.1",
     "rsp-validation": "^1.5.16",
     "substring": "1.0.0",
-    "uuid": "^3.1.0"
+    "uuid": "^3.4.0"
   }
 }
