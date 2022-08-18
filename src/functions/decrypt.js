@@ -1,6 +1,6 @@
-import '@babel/polyfill';
 import DecryptService from '../services/decryptService';
 import config from '../config';
+import CreateResponse from '../utils/createResponse';
 
 let configBootstrapped = false;
 export default async (event) => {
@@ -11,6 +11,10 @@ export default async (event) => {
 	let decryptObject = event.body;
 	if (typeof decryptObject === 'string') {
 		decryptObject = JSON.parse(event.body);
+	}
+
+	if (!event.body || !decryptObject.Token) {
+		return CreateResponse({ body: 'No token found in the request body', statusCode: 400 });
 	}
 
 	return DecryptService.decrypt(decryptObject.Token);

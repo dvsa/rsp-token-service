@@ -22,7 +22,6 @@ async function bootstrap() {
 				resolve(configuration);
 			});
 		} else {
-			console.log('Using envvars for config');
 			configuration = Object.values(configMetadata)
 				.reduce((config, envkey) => ({ [envkey]: process.env[envkey], ...config }), configuration);
 			resolve(configuration);

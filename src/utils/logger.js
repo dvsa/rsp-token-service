@@ -1,8 +1,17 @@
+/* eslint-disable no-console */
 export function logInfo(logName, message) {
 	console.log(JSON.stringify({
 		logName,
 		message,
 		logLevel: 'INFO',
+	}, null, 2));
+}
+
+export function logDebug(logName, message) {
+	console.log(JSON.stringify({
+		logName,
+		message,
+		logLevel: 'DEBUG',
 	}, null, 2));
 }
 

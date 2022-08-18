@@ -1,4 +1,4 @@
-import IsHex from '../utils/isHex';
+import IsHex from './isHex';
 
 export default (token) => {
 	// This util will check the basic format of the token.

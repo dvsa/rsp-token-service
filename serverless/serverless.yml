@@ -1,6 +1,5 @@
 service: rsp-token-decrypt
 
-frameworkVersion: ">=1.1.0 <2.0.0"
 custom:
   documentation:
     models:
@@ -25,8 +24,11 @@ plugins:
   - serverless-openapi-documentation
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs16.x
   region: eu-west-1
+  environment:
+    USE_SECRETS_MANAGER: "false"
+    ENCRYPTION_PASSWORD: "password"
 functions:
   authorizer:
     handler: handler.auth
@@ -36,11 +38,11 @@ functions:
     memorySize: 128
     events:
       -
-        http:
-          path: decrypt
+        httpApi:
+          path: /decrypt
           method: post
-          authorizer: aws_iam
-          cors: true
+          authorizer:
+            type: aws_iam
           documentation:
             summary: "Decrypt Token"
             description: "Decrypt Token"
