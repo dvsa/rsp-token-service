@@ -1,4 +1,3 @@
-
 export default (token, password) => {
 	if (token.length !== 2 && password.length !== 4) {
 		return '';

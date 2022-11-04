@@ -4,10 +4,10 @@
 		"@babel/env",
 		{
 		  "targets": {
-			"node": "8.10",
+			"node": "16.17"
 		  },
 		  "useBuiltIns": "entry",
-		  "corejs": "2",
+		  "corejs": "3",
 		},
 	  ],
 	]
