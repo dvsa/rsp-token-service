@@ -1,9 +1,11 @@
 import DecryptService from '../services/decryptService';
 import config from '../config';
 import CreateResponse from '../utils/createResponse';
+import { logInfo } from '../utils/logger';
 
 let configBootstrapped = false;
 export default async (event) => {
+	logInfo("decrypt function")
 	if (!configBootstrapped) {
 		await config.bootstrap();
 		configBootstrapped = true;

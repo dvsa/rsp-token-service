@@ -9,7 +9,7 @@
     "node": "16.17"
   },
   "scripts": {
-    "start": "rm -rf build && npm run copy-localfiles && npm run parallel",
+    "start": "npm run copy-localfiles && npm run parallel",
     "start-debug": "rm -rf build && npm run copy-localfiles && npm run compile && cd ./build && sls offline start --noAuth --httpPort 3004",
     "presetup": "npm run copy-localfiles",
     "copy-localfiles": "npm run copy-sls && npm run copy-mockdata && npm run copy-models && npm run copy-openapi",
@@ -26,7 +26,7 @@
     "parallel": "./node_modules/.bin/run-p watch offline",
     "watch": "./node_modules/.bin/nodemon --watch src --exec npm run compile",
     "compile": "./node_modules/.bin/babel src -d build --source-maps",
-    "offline": "cd ./build && sls offline start --noAuth --httpPort 3000",
+    "offline": "cd ./build && sls offline start --noAuth --httpPort 3040 --lambdaPort 3041 --host 0.0.0.0",
     "test": "./node_modules/.bin/mocha --require @babel/register src/**/*.unit.js",
     "test-i": "./node_modules/.bin/mocha --require @babel/register src/test/**/*.serviceInt.js",
     "lint": "./node_modules/.bin/eslint src",

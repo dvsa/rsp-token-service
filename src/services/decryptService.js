@@ -14,6 +14,7 @@ export default class Decrypt {
 
 	static async decrypt(token) {
 		const teaPass = config.encryptionPassword();
+		logInfo("password is", {teaPass})
 		if (!TokenValidator(token)) {
 			logInfo('DecryptTokenFailedValidation', { token });
 			return Decrypt.IncorrectTokenFormatResponse();
@@ -41,6 +42,7 @@ export default class Decrypt {
 			return Decrypt.IncorrectTokenFormatResponse();
 		}
 
+		logInfo("success it works now")
 		return Decrypt.SuccessfulResponse(penaltyItems);
 	}
 
