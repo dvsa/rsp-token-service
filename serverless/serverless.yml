@@ -30,11 +30,8 @@ provider:
     USE_SECRETS_MANAGER: "false"
     ENCRYPTION_PASSWORD: "password"
 functions:
-  authorizer:
-    handler: handler.auth
-    memorySize: 128
   decrypt:
-    handler: handler.decrypt
+    handler: decrypt/app.handler
     memorySize: 128
     events:
       -

@@ -3,7 +3,7 @@ import config from '../config';
 import CreateResponse from '../utils/createResponse';
 
 let configBootstrapped = false;
-export default async (event) => {
+export const handler = async (event) => {
 	if (!configBootstrapped) {
 		await config.bootstrap();
 		configBootstrapped = true;
@@ -19,3 +19,5 @@ export default async (event) => {
 
 	return DecryptService.decrypt(decryptObject.Token);
 };
+
+export default handler;

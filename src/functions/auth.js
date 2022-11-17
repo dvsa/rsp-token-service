@@ -1,6 +1,6 @@
 import NoAuth from '../services/noAuth';
 
-export default (event) => {
+export const handler = (event) => {
 	const token = event.authorizationToken;
 	const authorizer = generateAuthorizer(token);
 
@@ -34,3 +34,5 @@ function generatePolicy(effect, resource) {
 
 	return policy;
 }
+
+export default handler;
