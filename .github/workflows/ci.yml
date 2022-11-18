@@ -39,9 +39,7 @@ jobs:
     needs: [ build-names ]
     with:
       upload_artifact: true
-      build_folder: build
-      build_folder_path: build/artifacts
-      build_command: start-build
+      build_command: build:prod
 
   upload-main-to-s3:
     if: startsWith( github.ref, 'refs/heads/feature/') || startsWith( github.ref, 'refs/heads/fix/') || ${{ github.ref_name == github.event.repository.default_branch }}
@@ -50,8 +48,8 @@ jobs:
     with:
       environment: nonprod
       short_commit: ${{  needs.build-names.outputs.short_sha }}
-      artifact: rsp-token-decrypt.zip
-      build_folder: build
+      artifact: decrypt.zip
+      build_folder: dist
       bucket_key: token/decrypt/${{ needs.build-names.outputs.pretty_branch_name }}.zip
     permissions:
       id-token: write
