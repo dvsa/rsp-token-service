@@ -41,7 +41,7 @@ jobs:
       upload_artifact: true
       build_command: build:prod
 
-  upload-main-to-s3:
+  upload-s3:
     if: startsWith( github.ref, 'refs/heads/feature/') || startsWith( github.ref, 'refs/heads/fix/') || ${{ github.ref_name == github.event.repository.default_branch }}
     uses: dvsa/.github/.github/workflows/upload-to-s3.yaml@v2
     needs: [ lint, test, build, build-names ]
@@ -58,3 +58,17 @@ jobs:
       AWS_REGION: ${{ secrets.RSP_AWS_REGION }}
       BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
 
+  update-lambda-code:
+    #if: ${{ github.ref_name == github.event.repository.default_branch }}
+    uses: dvsa/.github/.github/workflows/update-lambda-function.yaml@v2.2
+    needs: [ build-names, build, upload-s3 ]
+    with:
+      environment: nonprod
+      lambda_function_name: rsp-nonprod-apis-token-decrypt
+      bucket_key: token/decrypt/${{ needs.build-names.outputs.pretty_branch_name }}.zip
+    permissions:
+      id-token: write
+    secrets:
+      AWS_ACCOUNT: ${{ secrets.RSP_AWS_ACCOUNT }}
+      AWS_REGION: ${{ secrets.RSP_AWS_REGION }}
+      BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
