@@ -19,7 +19,7 @@ jobs:
     with:
       environment: ${{ github.event.inputs.environment }}
       lambda_function_name: rsp-nonprod-apis-token-decrypt
-      bucket_key: token/decrypt/${{ needs.build-names.outputs.pretty_branch_name }}.zip
+      bucket_key: token/decrypt/${{ github.event.inputs.zip_archive }}
     permissions:
       id-token: write
     secrets:
