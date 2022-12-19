@@ -1,4 +1,4 @@
-import Validation from 'rsp-validation';
+import Validation from '@dvsa/rsp-validation';
 
 export default (decryptedToken) => {
 

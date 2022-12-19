@@ -60,6 +60,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@dvsa/rsp-validation": "^1.6.1",
     "aws-sdk": "^2.1256.0",
     "buffer": "6.0.3",
     "convert-hex": "0.1.0",
@@ -67,7 +68,6 @@
     "event-stream": "4.0.1",
     "expect.js": "0.3.1",
     "regenerator-runtime": "^0.13.10",
-    "rsp-validation": "^1.5.17",
     "substring": "1.0.0",
     "uuid": "^9.0.0"
   }
