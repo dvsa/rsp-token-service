@@ -6,7 +6,7 @@ import DecryptTea from '../utils/decryptTea';
 import ParseDecryptedToken from '../utils/parseDecryptedToken';
 import CreateResponse from '../utils/createResponse';
 import config from '../config';
-import { logInfo } from '../utils/logger';
+import { logError } from '../utils/logger';
 
 require('dotenv').config();
 
@@ -14,12 +14,16 @@ export default class Decrypt {
 
 	static async decrypt(token) {
 		const teaPass = config.encryptionPassword();
+		if (!teaPass) {
+			logError('MissingPassword', 'Password missing');
+			return Decrypt.MissingPassword();
+		}
 		if (!TokenValidator(token)) {
-			logInfo('DecryptTokenFailedValidation', { token });
+			logError('DecryptTokenFailedValidation', { token });
 			return Decrypt.IncorrectTokenFormatResponse();
 		}
 		if (!IsHex(teaPass)) {
-			logInfo('DecryptPassFailedValidation', 'Pass failed validation');
+			logError('DecryptPassFailedValidation', 'Pass failed validation');
 			return Decrypt.IncorrectPassFormat();
 		}
 
@@ -32,16 +36,20 @@ export default class Decrypt {
 			const decryptedVal = DecryptTea(uint32Token, teaPassArray);
 			penaltyItems = ParseDecryptedToken(decryptedVal);
 		} catch (error) {
-			logInfo('DecryptError', { token });
+			logError('DecryptError', { token });
 			return Decrypt.IncorrectTokenFormatResponse();
 		}
 
 		if (penaltyItems === '') {
-			logInfo('DecryptError', { token, message: 'Token has decrypted in the incorrect format' });
+			logError('DecryptError', { token, message: 'Token has decrypted in the incorrect format' });
 			return Decrypt.IncorrectTokenFormatResponse();
 		}
 
 		return Decrypt.SuccessfulResponse(penaltyItems);
+	}
+
+	static MissingPassword() {
+		return Decrypt.ErrorResponse({ message: 'Failed to retrieve password' });
 	}
 
 	static IncorrectPassFormat() {
