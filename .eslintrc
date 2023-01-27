@@ -3,7 +3,10 @@
     "plugins": [
         "import"
     ],
-    "env": { "mocha": true },
+    "env": {
+      "mocha": true,
+      "es2020": true
+  },
     "rules": {
       "indent": ["error", "tab"],
       "no-use-before-define": [2, {"functions": false, "classes": false}],
