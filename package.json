@@ -1,6 +1,6 @@
 {
   "name": "rsp-token-decrypt",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Service to decrypt RSP token",
   "repository": "github/dvsa/rsp-token-service",
   "author": "",
