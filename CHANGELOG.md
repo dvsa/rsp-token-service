@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/dvsa/rsp-token-service/compare/v3.0.1...v3.0.2) (2023-03-02)
+
+
+### Bug Fixes
+
+* bump validation package, update dependencies ([#64](https://github.com/dvsa/rsp-token-service/issues/64)) ([dba5e66](https://github.com/dvsa/rsp-token-service/commit/dba5e6613f00bcea5ffccf55573fb9a856982c0c))
+
 ## [3.0.1](https://github.com/dvsa/rsp-token-service/compare/v3.0.0...v3.0.1) (2023-02-22)
 
 
