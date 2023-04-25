@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "@dvsa/rsp-validation": "^1.9.2",
-    "aws-sdk": "^2.1331.0",
+    "aws-sdk": "^2.1354.0",
     "buffer": "6.0.3",
     "convert-hex": "0.1.0",
     "dotenv": "16.0.3",
