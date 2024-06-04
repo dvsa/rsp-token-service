@@ -11,7 +11,7 @@ This API Will decrypt the payment token provided by the mobile application used 
 
 ### Running Locally
 
-Set the right Node version (16.17)
+Set the right Node version (20.x)
 
 `nvm use`
 
