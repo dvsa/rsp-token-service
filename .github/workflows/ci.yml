@@ -77,6 +77,7 @@ jobs:
     permissions:
       id-token: write
     secrets:
+      AWS_ROLE_TO_ASSUME_ARN: ${{ secrets.AWS_ROLE_TO_ASSUME_ARN }}
       AWS_ACCOUNT: ${{ secrets.RSP_AWS_ACCOUNT }}
       AWS_REGION: ${{ secrets.RSP_AWS_REGION }}
       BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
