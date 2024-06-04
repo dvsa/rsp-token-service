@@ -30,7 +30,7 @@ jobs:
       short_sha: ${{ steps.sha.outputs.SHORT_SHA }}
       pretty_branch_name: ${{ steps.branch.outputs.NAME }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set short sha output
         id: sha
         run: echo "SHORT_SHA=$(git rev-parse --short=11 HEAD)" >> $GITHUB_OUTPUT
