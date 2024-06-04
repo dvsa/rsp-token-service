@@ -7,13 +7,17 @@ on:
 
 jobs:
   lint:
-    uses: dvsa/.github/.github/workflows/nodejs-lint.yaml@v2
+    uses: dvsa/.github/.github/workflows/nodejs-lint.yaml@v4.0.1
+    with:
+      node-version: 20.x
 
   test:
-    uses: dvsa/.github/.github/workflows/nodejs-test.yaml@v2
+    uses: dvsa/.github/.github/workflows/nodejs-test.yaml@v4.0.1
+    with:
+      node-version: 20.x
 
   security:
-    uses: dvsa/.github/.github/workflows/nodejs-security.yaml@v2
+    uses: dvsa/.github/.github/workflows/nodejs-security.yaml@v4.0.1
     with:
       args: --all-projects
     secrets:
@@ -37,15 +41,16 @@ jobs:
           echo "NAME=${PRETTY_BRANCH_NAME}" >> $GITHUB_OUTPUT
 
   build:
-    uses: dvsa/.github/.github/workflows/nodejs-build.yaml@v2
+    uses: dvsa/.github/.github/workflows/nodejs-build.yaml@v4.0.1
     needs: [ build-names ]
     with:
       upload_artifact: true
       build_command: build:prod
+      node-version: 20.x
 
   upload-s3:
     if: startsWith( github.ref, 'refs/heads/feature/') || startsWith( github.ref, 'refs/heads/fix/') || ${{ github.ref_name == github.event.repository.default_branch }}
-    uses: dvsa/.github/.github/workflows/upload-to-s3.yaml@v2
+    uses: dvsa/.github/.github/workflows/upload-to-s3.yaml@v4.0.1
     needs: [ lint, test, build, build-names ]
     with:
       environment: nonprod
@@ -62,7 +67,7 @@ jobs:
 
   update-lambda-code:
     if: ${{ github.ref_name == github.event.repository.default_branch }}
-    uses: dvsa/.github/.github/workflows/update-lambda-function.yaml@v2.2
+    uses: dvsa/.github/.github/workflows/update-lambda-function.yaml@v4.0.1
     needs: [ build-names, build, upload-s3 ]
     with:
       environment: nonprod
