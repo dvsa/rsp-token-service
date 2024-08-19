@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.0](https://github.com/dvsa/rsp-token-service/compare/v3.1.0...v4.0.0) (2024-08-16)
+
+
+### Miscellaneous Chores
+
+* release 4.0.0 ([4122c1b](https://github.com/dvsa/rsp-token-service/commit/4122c1b863fec22bb97286b9485e73d889bb62e8))
+
 ## [3.1.0](https://github.com/dvsa/rsp-token-service/compare/v3.0.2...v3.1.0) (2023-03-13)
 
 
