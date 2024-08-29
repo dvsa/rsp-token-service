@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/dvsa/rsp-token-service/compare/v4.0.0...v4.0.1) (2024-08-29)
+
+
+### Bug Fixes
+
+* amend workflow and update validation package ([#72](https://github.com/dvsa/rsp-token-service/issues/72)) ([#74](https://github.com/dvsa/rsp-token-service/issues/74)) ([534ddb6](https://github.com/dvsa/rsp-token-service/commit/534ddb69672c97b3d6a9682a7ef80dfc72adb470))
+
 ## [4.0.0](https://github.com/dvsa/rsp-token-service/compare/v3.1.0...v4.0.0) (2024-08-16)
 
 
