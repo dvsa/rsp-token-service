@@ -1,26 +1,16 @@
 {
-	"type": "object",
-	"required": [
-		"Reference", "FormattedReference", "DocumentType", "Amount"
-	],
-	"properties": {
-		"Reference": {
-			"type": "string"
-		},
-		"FormattedReference": {
-			"type": "string"
-		},
-		"DocumentType": {
-			"type": "string"
-		},
-		"Amount": {
-			"type": "string"
-		}
-	},
-	"example": {
-		"Reference": "0012341567890",
-		"FormattedReference": "1234-1-567890-IM",
-		"DocumentType": "1",
-		"Amount": "66"
-	}
+  "type": "object",
+  "required": ["Reference", "FormattedReference", "DocumentType", "PaymentAmount"],
+  "properties": {
+    "Reference": { "type": "string" },
+    "FormattedReference": { "type": "string" },
+    "DocumentType": { "type": "integer" },
+    "PaymentAmount": { "type": "integer" }
+  },
+  "example": {
+    "Reference": "1231231231231",
+    "FormattedReference": "1231231231231",
+    "DocumentType": 0,
+    "PaymentAmount": 100
+  }
 }
