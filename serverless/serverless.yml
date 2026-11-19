@@ -20,22 +20,21 @@ custom:
     description: 'This is an API to decrypt the token provided by the RSP mobile application'
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-offline
-  - serverless-openapi-documentation
+  - serverless-openapi-documenter
 provider:
   name: aws
-  runtime: nodejs20.x
+  runtime: nodejs24.x
   region: eu-west-1
-  environment:
-    USE_SECRETS_MANAGER: "false"
-    ENCRYPTION_PASSWORD: "password"
+
 functions:
   decrypt:
     handler: decrypt/app.handler
     memorySize: 128
     events:
       -
-        httpApi:
+        http:
           path: /decrypt
           method: post
           authorizer:

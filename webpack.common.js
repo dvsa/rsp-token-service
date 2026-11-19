@@ -1,64 +1,31 @@
 const path = require('path');
-const AwsSamPlugin = require('aws-sam-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-
-const awsSamPlugin = new AwsSamPlugin({ vscodeDebug: false });
+const { lambdas } = require('./lambdas.json');
 
 module.exports = {
-	// Loads the entry object from the AWS::Serverless::Function resources in your
-	// SAM config. Setting this to a function will
-	entry: () => awsSamPlugin.entry(),
-
-	// Write the output to the .aws-sam/build folder
+	entry: Object.fromEntries(lambdas.map((name) => [name, path.resolve(__dirname, `src/functions/${name}.js`)])),
 	output: {
-		filename: (/** @type {any} */ chunkData) => awsSamPlugin.filename(chunkData),
+		path: path.resolve(__dirname, 'build'),
+		filename: '[name]/app.js',
 		libraryTarget: 'commonjs2',
-		path: path.resolve('.'),
+		asyncChunks: false,
 	},
-
-	// Resolve .ts and .js extensions
-	resolve: {
-		extensions: ['.ts', '.js'],
-	},
-
-	// Target node
 	target: 'node',
-
 	mode: 'development',
-
-	// AWS recommends always including the aws-sdk in your Lambda package but excluding can significantly reduce
-	// the size of your deployment package. If you want to always include it then comment out this line. It has
-	// been included conditionally because the node10.x docker image used by SAM local doesn't include it.
-	// externals: process.env.NODE_ENV === 'development' ? [] : ['aws-sdk'],
-	externals: {
-		fsevents: 'require(\'fsevents\')',
-	},
-
+	resolve: { extensions: ['.js', '.ts'] },
+	externals: { fsevents: 'require(\'fsevents\')' },
 	module: {
-		rules: [
-			{
-				test: /\.m?js$/,
-				exclude: /node_modules/,
-				use: {
-					loader: 'babel-loader',
-					options: {
-						presets: [
-							['@babel/preset-env'],
-						],
-					},
-				},
-			},
-		],
+		rules: [{
+			test: /\.m?js$/,
+			exclude: /node_modules/,
+			use: { loader: 'babel-loader', options: { presets: [['@babel/preset-env']] } },
+		}],
 	},
-
-	// Add the AWS SAM Webpack plugin
-	plugins: [
-		awsSamPlugin,
-		new CopyWebpackPlugin({
-			patterns: [
-				{ from: 'serverless/serverless.yml', to: `${path.resolve(__dirname, '.aws-sam/build')}` },
-				{ from: 'src/models/', to: `${path.resolve(__dirname, '.aws-sam/build/models/')}` },
-			],
-		}),
-	],
+	plugins: [new CopyWebpackPlugin({
+		patterns: [
+			{ from: 'serverless/serverless.yml', to: 'serverless.yml' },
+			{ from: 'src/models', to: 'models' },
+			{ from: '.env', to: '.env', toType: 'file', noErrorOnMissing: true },
+		],
+	})],
 };
