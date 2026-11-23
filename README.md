@@ -12,25 +12,21 @@ Use Node 24 (`nvm use`) and install the locked dependencies with `npm ci`.
 profile or private fixture is needed for this local path. Secrets Manager is
 disabled by the local Serverless configuration.
 
-For the synthetic requests in `bruno/`, start the service in a terminal:
+Start the service in a terminal:
 
 ```sh
 npm run start
 ```
 
-The build copies the root `.env` into `build/`, and Offline loads it through
-`serverless-dotenv-plugin` and Node's `--env-file` (as in `rsp-documents-service`). If `ENCRYPTION_PASSWORD` is not set in `.env` or the
-shell, the placeholder `password` is not a valid hex encryption password and
-valid tokens will not decrypt. The Bruno tokens are synthetic test fixtures,
-not production secrets. The HTTP API is at `http://localhost:3000/decrypt`; the
-local Lambda endpoint defaults to port 3002. If those ports are occupied, run
-`npm run offline -- --httpPort <port> --lambdaPort <port>` (after `npm run build`)
-and update the Bruno URL to match. Stop the service with Ctrl+C.
+`serverless-dotenv-plugin` loads the root `.env` file when Offline starts. If
+`ENCRYPTION_PASSWORD` is not set in `.env` or the shell, the placeholder
+`password` is not a valid hex encryption password and valid tokens will not
+decrypt. The HTTP API is at `http://localhost:3000/dev/decrypt`; the local
+Lambda endpoint defaults to port 3002. If those ports are occupied, run
+`npm run offline -- --httpPort <port> --lambdaPort <port>` (after
+`npm run build`). Stop the service with Ctrl+C.
 
-Open `bruno/` as a collection in Bruno and run the synthetic payment and
-missing-token requests against the local endpoint. The payment request returns
-the exact reference, type and amount; the missing-token request returns 400.
-These requests do not write data or call real AWS. They are **not** configured
+Local requests do not write data or call real AWS. They are **not** configured
 for non-production; a real REST API call requires authorised SigV4 credentials
 and environment-specific configuration. After credentials expire, renew them
 and restart any process that captured them; this is not needed for local tests.
@@ -94,7 +90,7 @@ to reproduce the baseline in another checkout.
 The suite covers `POST /decrypt` and local direct Lambda proxy events. It also
 builds the exported `auth` handler behind a test-only async adapter as a local
 Lambda: that handler is not configured as a function or route in the service's
-SAM or Serverless files. Serverless Offline timed out when the synchronous
+Serverless file. Serverless Offline timed out when the synchronous
 handler was wired directly, so the adapter checks its returned policy but does
 not verify native Lambda completion. The current stub returns an Allow policy
 even when no token is supplied; this records existing behaviour, not a
@@ -106,6 +102,6 @@ Auto-fix lint with `npm run lint-fix`. Build for release with
 `npm run build:prod`; this writes `dist/decrypt.zip` and overwrites that archive
 if it already exists. The archive contains its own bundled dependencies.
 
-Webpack builds the Lambda using `lambdas.json`; SAM points at the generated
-bundle. OSLS and Serverless Offline provide the local emulator. Actual AWS
+Webpack builds the Lambda using `lambdas.json` into `build/`. OSLS and
+Serverless Offline provide the local emulator. Actual AWS
 infrastructure is managed separately through Terraform.

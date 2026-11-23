@@ -174,7 +174,7 @@ function buildAuthorizer() {
 
 async function executeScenario(definition, httpPort, lambdaPort) {
 	if (definition.kind === 'http') {
-		const response = await request(`http://127.0.0.1:${httpPort}/decrypt`, definition.body);
+		const response = await request(`http://127.0.0.1:${httpPort}/integration/decrypt`, definition.body);
 		check(response.status, definition.status, 'HTTP status');
 		check(response.headers['access-control-allow-origin'], '*', 'HTTP CORS header');
 		check((response.headers['content-type'] || '').split(';')[0], 'application/json', 'HTTP content type');
@@ -218,24 +218,28 @@ async function main() {
 	try {
 		if (process.env.CI) throw new Error('Setup: integration runs are not allowed in CI.');
 		const build = path.join(root, 'build');
-		const configPath = path.join(build, 'serverless.yml');
-		if (!fs.existsSync(configPath) || !fs.existsSync(path.join(build, 'decrypt/app.js'))) {
+		const configPath = path.join(root, 'serverless.yml');
+		if (!fs.existsSync(path.join(build, 'decrypt/app.js'))) {
 			throw new Error('Setup: local build is missing; run npm run build first.');
 		}
 		const config = fs.readFileSync(configPath, 'utf8');
-		if (!config.includes('USE_SECRETS_MANAGER: "false"')
-			|| !config.includes("ENCRYPTION_PASSWORD: ${env:ENCRYPTION_PASSWORD, 'password'}")) {
-			throw new Error('Setup: expected local-only configuration was not found; rebuild and review the local configuration.');
-		}
 		if (!/runtime:\s*nodejs\d+\.x/.test(config)) {
 			throw new Error('Setup: local Node runtime configuration was not found.');
+		}
+		if (!config.includes('handler: build/decrypt/app.handler') || !config.includes('serverless-dotenv-plugin')) {
+			throw new Error('Setup: expected local configuration was not found; review serverless.yml.');
 		}
 		workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'rsp-token-integration-'));
 		fs.cpSync(path.join(build, 'decrypt'), path.join(workspace, 'decrypt'), { recursive: true });
 		fs.cpSync(path.join(build, 'models'), path.join(workspace, 'models'), { recursive: true });
 		fs.symlinkSync(path.join(root, 'node_modules'), path.join(workspace, 'node_modules'), 'dir');
-		const offlineConfig = config.replace("ENCRYPTION_PASSWORD: ${env:ENCRYPTION_PASSWORD, 'password'}", `ENCRYPTION_PASSWORD: "${password}"`);
-		fs.writeFileSync(path.join(workspace, 'serverless.yml'), `${offlineConfig}\n  auth:\n    handler: auth/app.handler\n`);
+		// The workspace has no .env, so inject the synthetic local settings instead of the dotenv plugin.
+		const offlineConfig = config
+			.replace('  - serverless-dotenv-plugin\n', '')
+			.replaceAll('build/decrypt/', 'decrypt/')
+			.replaceAll('build/models/', 'models/')
+			.replace(/(  region: .*\n)/, `$1  environment:\n    USE_SECRETS_MANAGER: "false"\n    ENCRYPTION_PASSWORD: "${password}"\n`);
+		fs.writeFileSync(path.join(workspace, 'serverless.yml'), `${offlineConfig.trimEnd()}\n  auth:\n    handler: auth/app.handler\n`);
 		console.log('Building the exported authorizer for test-only Lambda invocation...');
 		await buildAuthorizer();
 		if (interrupted) throw new Error('Interrupted before emulator startup.');

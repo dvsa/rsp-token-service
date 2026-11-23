@@ -23,7 +23,6 @@ module.exports = {
 	},
 	plugins: [new CopyWebpackPlugin({
 		patterns: [
-			{ from: 'serverless/serverless.yml', to: 'serverless.yml' },
 			{ from: 'src/models', to: 'models' },
 		],
 	})],

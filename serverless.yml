@@ -6,15 +6,15 @@ custom:
       - name: DecryptRequest
         description: This is a decrypt request
         contentType: application/json
-        schema: ${file(models/DecryptRequest.json)}
+        schema: ${file(build/models/DecryptRequest.json)}
       - name: DecryptResponse
         description: This is a decrypt response
         contentType: application/json
-        schema: ${file(models/DecryptResponse.json)}
+        schema: ${file(build/models/DecryptResponse.json)}
       - name: ErrorResponse
         description: This is an error
         contentType: application/json
-        schema: ${file(models/ErrorResponse.json)}
+        schema: ${file(build/models/ErrorResponse.json)}
     version: '1'
     title: 'RSP Token Decryption API'
     description: 'This is an API to decrypt the token provided by the RSP mobile application'
@@ -30,7 +30,7 @@ provider:
 
 functions:
   decrypt:
-    handler: decrypt/app.handler
+    handler: build/decrypt/app.handler
     memorySize: 128
     events:
       -

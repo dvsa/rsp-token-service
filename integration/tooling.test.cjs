@@ -36,10 +36,10 @@ test('inventory matches exports and configured local function and route', () => 
 	const handler = fs.readFileSync(path.join(root, 'src/handler.js'), 'utf8');
 	const names = handler.match(/export\s*{([^}]+)}/)[1].split(',').map((name) => name.trim()).filter(Boolean).sort();
 	assert.deepEqual(inventory.map((item) => item.handler).sort(), names);
-	const config = fs.readFileSync(path.join(root, 'serverless/serverless.yml'), 'utf8');
+	const config = fs.readFileSync(path.join(root, 'serverless.yml'), 'utf8');
 	assert.match(config, /path:\s*\/decrypt/);
 	assert.match(config, /method:\s*post/);
-	assert.match(config, /handler:\s*decrypt\/app\.handler/);
+	assert.match(config, /handler:\s*build\/decrypt\/app\.handler/);
 });
 
 test('reports escape markup and count every outcome', () => {
