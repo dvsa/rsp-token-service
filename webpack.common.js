@@ -25,7 +25,6 @@ module.exports = {
 		patterns: [
 			{ from: 'serverless/serverless.yml', to: 'serverless.yml' },
 			{ from: 'src/models', to: 'models' },
-			{ from: '.env', to: '.env', toType: 'file', noErrorOnMissing: true },
 		],
 	})],
 };

@@ -26,7 +26,7 @@
     "parallel": "./node_modules/.bin/run-p watch offline",
     "build": "webpack-cli --config webpack.common.js",
     "start": "npm run build && npm run parallel",
-    "build:prod": "webpack-cli --config webpack.production.js",
+    "build:prod": "rm -rf dist build && webpack-cli --config webpack.production.js",
     "build:ci": "webpack-cli --config webpack.production.js"
   },
   "devDependencies": {

@@ -10,11 +10,13 @@ jobs:
     uses: dvsa/.github/.github/workflows/nodejs-lint.yaml@v7
     with:
       node-version: 24.x
+      npm-version: 11.x
 
   test:
     uses: dvsa/.github/.github/workflows/nodejs-test.yaml@v7
     with:
       node-version: 24.x
+      npm-version: 11.x
 
   security:
     uses: dvsa/.github/.github/workflows/nodejs-security.yaml@v7
