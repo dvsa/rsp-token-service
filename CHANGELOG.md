@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.0](https://github.com/dvsa/rsp-token-service/compare/v4.0.1...v4.1.0) (2026-11-26)
+
+
+### Features
+
+* node 24 upgrade and sdk V3 upgrade ([#77](https://github.com/dvsa/rsp-token-service/issues/77)) ([831d519](https://github.com/dvsa/rsp-token-service/commit/831d51939cbfbb4bc249674d4224c37c57b629b7))
+
 ## [4.0.1](https://github.com/dvsa/rsp-token-service/compare/v4.0.0...v4.0.1) (2024-08-29)
 
 
