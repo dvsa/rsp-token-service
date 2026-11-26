@@ -1,79 +1,31 @@
-const fs = require('fs-extra');
-const { merge } = require('webpack-merge');
+const fs = require('fs');
+const path = require('path');
 const archiver = require('archiver');
+const { merge } = require('webpack-merge');
+const { lambdas } = require('./lambdas.json');
 const common = require('./webpack.common');
 
-const OUTPUT_FOLDER = './dist';
-
 class BundlePlugin {
-	/**
-     * @param {{ archives: any; assets?: any; }} params
-     */
-	constructor(params) {
-		this.archives = params.archives;
-		this.assets = params.assets || [];
-	}
-
 	apply(compiler) {
-		compiler.hooks.afterEmit.tap('zip-pack-plugin', async () => {
-			this.archives.forEach(async (archive) => {
-				await BundlePlugin.createArchive(archive.inputPath, archive.outputPath, archive.outputName, archive.ignore);
-			});
-
-			this.assets.forEach((asset) => {
-				fs.copySync(asset.inputPath, asset.outputPath);
-			});
+		compiler.hooks.afterEmit.tapPromise('zip-pack-plugin', async () => {
+			await fs.promises.mkdir(path.resolve(__dirname, 'dist'), { recursive: true });
+			await Promise.all(lambdas.map((name) => new Promise((resolve, reject) => {
+				const output = fs.createWriteStream(path.resolve(__dirname, 'dist', `${name}.zip`));
+				const archive = archiver('zip');
+				output.on('close', resolve);
+				output.on('error', reject);
+				archive.on('error', reject);
+				archive.on('warning', reject);
+				archive.pipe(output);
+				archive.directory(path.resolve(__dirname, 'build', name), false);
+				archive.finalize().catch(reject);
+			})));
 		});
-	}
-
-	static createArchive(inputPath, outputPath, outputName, ignore) {
-		if (!fs.existsSync(outputPath)) {
-			fs.mkdirSync(outputPath);
-		}
-		const output = fs.createWriteStream(`${outputPath}/${outputName}.zip`);
-		const archive = archiver('zip');
-
-		output.on('close', () => {
-			console.log(`${archive.pointer()} total bytes`);
-			console.log('archiver has been finalized and the output file descriptor has closed.');
-		});
-		archive.on('error', (err) => {
-			throw err;
-		});
-
-		archive.pipe(output);
-		archive.glob(
-			'**/*',
-			{
-				cwd: inputPath,
-				skip: ignore,
-			},
-		);
-		return archive.finalize();
 	}
 }
 
-// the auth lambda isn't being used. Remove from build list
-const lambdaArr = [
-	'decrypt',
-];
-
-function getArchives() {
-	return lambdaArr.map((lambdaName) => ({
-		inputPath: `.aws-sam/build/${lambdaName}`,
-		outputPath: `${OUTPUT_FOLDER}`,
-		outputName: `${lambdaName}`,
-	}));
-}
-
-module.exports = () => {
-	return merge(common, {
-		mode: 'production',
-		plugins: [
-			// @ts-ignore
-			new BundlePlugin({
-				archives: getArchives(),
-			}),
-		],
-	});
-};
+module.exports = () => merge(common, {
+	mode: 'production',
+	output: { asyncChunks: false },
+	plugins: [new BundlePlugin()],
+});

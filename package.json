@@ -6,24 +6,27 @@
   "author": "",
   "license": "MIT",
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
   "scripts": {
     "prepush": "npm test && npm run lint && npm run check-security",
     "check-security": "npm run check-git-secrets && npm run check-security-log",
     "check-git-secrets": "git secrets --scan",
     "check-security-log": "git log -p | scanrepo",
-    "test": "./node_modules/.bin/mocha --require @babel/register src/**/*.unit.js",
+    "test": "node --no-experimental-detect-module ./node_modules/mocha/bin/mocha.js --require ./test/unit/setup.cjs --require @babel/register src/test/decrypt.unit.js 'test/unit/**/*.unit.cjs'",
+    "test:coverage": "BABEL_ENV=coverage nyc npm test",
+    "test-i": "node integration/run.cjs",
+    "test-i:tooling": "node --test integration/tooling.test.cjs",
     "lint": "./node_modules/.bin/eslint src",
     "lint-fix": "./node_modules/.bin/eslint src --fix",
-    "build-openapi": "npm run compile && npm run copy-localfiles && cd build && sls openapi generate -f json && npm run openapireplace",
+    "build-openapi": "npm run build && node ./node_modules/serverless/bin/serverless.js openapi generate -f json",
     "openapireplace": "node openapiReplace.js",
     "watch": "./node_modules/.bin/nodemon --watch src --exec npm run build",
-    "offline": "cd ./.aws-sam/build && sls offline start --noAuth",
+    "offline": "node ./node_modules/serverless/bin/serverless.js offline start --noAuth",
     "parallel": "./node_modules/.bin/run-p watch offline",
     "build": "webpack-cli --config webpack.common.js",
-    "start": "rm -rf .aws-sam && npm run build && npm run parallel",
-    "build:prod": "rm -rf dist .aws-sam && webpack-cli --config webpack.production.js",
+    "start": "npm run build && npm run parallel",
+    "build:prod": "rm -rf dist build && webpack-cli --config webpack.production.js",
     "build:ci": "webpack-cli --config webpack.production.js"
   },
   "devDependencies": {
@@ -33,9 +36,9 @@
     "@babel/register": "^7.21.0",
     "@babel/runtime-corejs3": "^7.21.0",
     "archiver": "^5.3.1",
-    "aws-sam-webpack-plugin": "^0.14.0",
     "babel-loader": "^9.1.2",
-    "copy-webpack-plugin": "^11.0.0",
+    "babel-plugin-istanbul": "^7.0.1",
+    "copy-webpack-plugin": "^14.0.0",
     "copyfiles": "^2.4.1",
     "core-js": "^3.29.0",
     "eslint": "^8.35.0",
@@ -43,14 +46,16 @@
     "eslint-plugin-import": "^2.27.5",
     "expect": "^29.5.0",
     "fs-extra": "^11.1.0",
-    "mocha": "^10.2.0",
-    "nodemon": "^2.0.21",
+    "mocha": "^12.0.3",
+    "nodemon": "^3.1.14",
     "npm-run-all": "^4.1.5",
+    "nyc": "^17.1.0",
+    "osls": "^4.7.0",
     "replace": "^1.2.2",
-    "rimraf": "^4.4.0",
-    "serverless": "^3.28.1",
-    "serverless-offline": "^12.0.4",
-    "serverless-openapi-documentation": "^0.4.0",
+    "rimraf": "^6.1.4",
+    "serverless-dotenv-plugin": "^6.0.0",
+    "serverless-offline": "^14.8.4",
+    "serverless-openapi-documenter": "^0.1.7",
     "sinon": "^15.0.1",
     "supertest": "^6.3.3",
     "wait-on": "^7.0.1",
@@ -59,15 +64,12 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.1170.0",
     "@dvsa/rsp-validation": "^4.0.0",
-    "aws-sdk": "^2.1331.0",
-    "buffer": "6.0.3",
     "convert-hex": "0.1.0",
-    "dotenv": "16.0.3",
-    "event-stream": "4.0.1",
-    "expect.js": "0.3.1",
-    "regenerator-runtime": "^0.13.11",
-    "substring": "1.0.0",
-    "uuid": "^9.0.0"
+    "dotenv": "16.0.3"
+  },
+  "overrides": {
+    "serverless": "npm:osls"
   }
 }

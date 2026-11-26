@@ -1,36 +1,11 @@
 {
-  "type": "object",
-  "required": [
-    "statusCode", "errors"
-  ],
-  "properties": {
-    "statusCode": {
-      "type": "integer"
-    },
-    "errors": {
-      "type": "array",
-      "items":
-      {
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
-    }
-  },
-  "example": 
+  "oneOf": [
+    { "type": "string", "example": "No token found in the request body" },
     {
-      "statusCode": 429,
-      "errors": [
-        {
-          "error": "RateLimitError",
-          "message": "Exceeded rate limit for key type TEAM of 10 requests per 10 seconds"
-        }
-      ]
+      "type": "object",
+      "required": ["message"],
+      "properties": { "message": { "type": "string" } },
+      "example": { "message": "Token is not in the correct format" }
     }
+  ]
 }
